@@ -16,7 +16,7 @@ mongoose.connect(
     "mongodb+srv://ephremhabtamu0524:ephrem1234@cluster1.n3bi7va.mongodb.net/mernBlog?retryWrites=true&w=majority"
     );
 app.use(express.json());
-app.use(cookie-parser());
+app.use(cookieParser());
 
 
 app.post('/register', async(req,res)=>{
@@ -38,7 +38,10 @@ const {username,password} = req.body;
   if(passOk){
     jwt.sign({username,id:userDoc._id},secret,{},(err,token)=>{
      if(err) throw err;
-     res.cookie('token',token).json('ok');
+     res.cookie('token',token).json({
+        id:userDoc._id,
+        username,
+     });
     })
   }else{
     res.status(400).json('wrong credintials')
@@ -48,7 +51,14 @@ const {username,password} = req.body;
 
 app.get('/profile',(req,res)=>{
   const {token} = req.cookies;
-  
+  jwt.verify(token, secret,{},(err,info)=>{
+    if(err) throw err;
+    res.json(info);
+  })
   res.json(req.cookies)
+});
+
+app.post('/logout',(req,res)=>{
+    res.cookie('token','').json('ok');
 })
 app.listen(4000);
