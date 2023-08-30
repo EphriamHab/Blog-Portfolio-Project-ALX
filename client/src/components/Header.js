@@ -17,8 +17,9 @@ export default function Header(){
       fetch('http://localhost:4000/logout',{
         credentials:'include',
         method:'POST',
+      }).then(() => {
+        setUserInfo(null);
       });
-      setUserInfo(null); 
     }
     const username = userInfo?.username;
     return(
