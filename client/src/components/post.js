@@ -1,17 +1,26 @@
+import {formatISO9075} from 'date-fns'
+import {Link} from "react-router-dom"
+export default function Post({title,summary,cover,content,createdAt,author}){
+  console.log("Title:", title);
+  console.log("Summary:", summary);
 
-export default function Post(){
     return(
         <div className="post">
         <div className="image">
-        <img src="https://www.womenintech.co.uk/wp-content/uploads/2021/11/Tech-skills-2022-1.png" alt=""/>
+         <Link to={'/post/${_id}'}>
+         <img src={'http://localhost:4000/'+cover} alt=""/>
+         </Link>
         </div>
-        <div className="text">
-        <h2>Encryption, Bad Bills, and Ripple Effects: How Riana Pfefferkorn Protects the Internet</h2>
+        <div className="texts">
+        <Link to={'/post/${_id}'}>
+        <h2>{title}</h2>
+        </Link>
+       
         <p className="info">
-          <a className="author">Ephrem Habtamu</a>
-          <time>2023-08-29</time>
+          <a className="author">{author.username}</a>
+          <time>{formatISO9075(new Date(createdAt))}</time>
         </p>
-        <p className="summary">The Internet Resilience Index (IRI) tracks open-source Internet resiliency metrics to support the development of policies and infrastructure to improve Internet</p>
+        <p className="summary">{summary}</p>
         </div>
       </div>
     );

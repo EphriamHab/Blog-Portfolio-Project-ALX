@@ -24,9 +24,7 @@ header{
 }
 header a{
     text-decoration:none;
-    background-color: blue;
     padding: 10px;
-    border-radius: 10px;
     color: inherit;
 }
 header a.logo{

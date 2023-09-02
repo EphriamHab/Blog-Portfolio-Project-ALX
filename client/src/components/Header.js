@@ -9,9 +9,9 @@ export default function Header(){
         }).then(response =>{
            response.json().then(userInfo=>{
            setUserInfo(userInfo);
-           })
-        })
-    })
+           });
+        });
+    },[]);
 
     function logout(){
       fetch('http://localhost:4000/logout',{
