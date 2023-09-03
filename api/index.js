@@ -11,6 +11,7 @@ const uploadMiddleware = multer({ dest: 'uploads/' });
 const fs = require('fs');
 
 const bcrypt = require('bcryptjs');
+const PostModel = require("./models/Post");
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'asdfe45we45w345wegw345werjktjwertkj';
@@ -54,14 +55,7 @@ app.post('/login',async(req,res)=>{
     }else{
       res.status(400).json('wrong credintials')
     }
-  })
-
-// app.get('/profile',(req,res)=>{
-//   
-
-//   })
-//   res.json(req.cookies);
-// });
+  });
 app.get('/profile', (req, res) => {
   const { token } = req.cookies;
 
@@ -140,6 +134,41 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
     } 
 
     res.json(updatedPost);
+  });
+});
+
+app.delete("/post/:id", async (req, res) => {
+  console.log("DELETE request received at /post/:id");
+  const postId = req.params.id;
+
+  const { token } = req.cookies;
+
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized - Missing Token' })
+  }
+  jwt.verify(token, secret, async (err, userInfo) => {
+    if (err) {
+      return res.status(403).json({ error: 'Invalid token' });
+    }
+
+    try {
+      const post = await PostModel.findById(postId);
+      if (!post) {
+        return res.status(404).json("Post not found");
+      }
+      if (post.author.toString() === userInfo.id) {
+        try {
+          await post.deleteOne();
+          return res.status(200).json("Post has been deleted");
+        } catch (error) {
+          return res.status(500).json("Error deleting post");
+        }
+      } else {
+        return res.status(401).json("You can delete only your post!");
+      }
+    } catch (error) {
+      return res.status(500).json(error);
+    }
   });
 });
 
