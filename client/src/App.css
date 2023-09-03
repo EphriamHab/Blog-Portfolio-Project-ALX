@@ -137,20 +137,49 @@ div.content p{
 div.content li{
     margin-bottom: 10px;
 }
-div.edit-row{
-    text-align: center;
-    margin-bottom: 20px;
-}
-div.post-page a.edit-btn{
-    background-color: #333;
-    display: inline-flex;
+div.edit-delete-row {
+    display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  div.edit-delete-row a.edit-btn {
+    background-color: #333;
+    display: flex;
+    align-items: center;
     color: #fff;
-    padding:15px 30px;
+    padding: 15px 30px;
     border-radius: 5px;
     text-decoration: none;
-}
-a svg{
-    height:20px;
-}
+    width: 150px; 
+    height: 50px; 
+    margin-right: 10px; 
+  }
+  
+
+  div.edit-delete-row button.delete-btn {
+    background-color: #201f1f; 
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 150px; 
+    height: 50px; 
+  }
+  
+ 
+  div.edit-delete-row a.edit-btn svg,
+  div.edit-delete-row button.delete-btn svg {
+    width: 1.5rem; 
+    height: 1.5rem; 
+    fill: #fff; 
+    margin-right: 10px; 
+  }
+  
+  
+  
+   
+  
+
