@@ -14,19 +14,19 @@ export default function EditPost(){
     const [redirect,setRedirect] = useState(false);
 
     useEffect(()=>{
-        fetch('http://localhost:4000/post'+id)
+        fetch('http://localhost:4000/post/'+id)
           .then(response =>{
             response.json().then(postInfo =>{
                 setTitle(postInfo.title); 
                 setSummary(postInfo.summary);
                 setContent(postInfo.content);
-            })
-          })
-    },[])
+            });
+          });
+    },[]);
 
     async function updatePost(e){
      e.preventDefault();
-     const data = FormData();
+     const data = new FormData();
      data.set('title',title);
      data.set('summary',summary);
      data.set('content',content);
@@ -35,7 +35,7 @@ export default function EditPost(){
         data.set('file',files?.[0]);
      }
      
-   const response = await fetch('http:localhost:4000/post',{
+   const response = await fetch('http://localhost:4000/post',{
         method:'PUT',
         body: data,
         credentials: 'include',
@@ -46,7 +46,7 @@ export default function EditPost(){
      }
     }
     if(redirect){
-        <Navigate to = {'/post/'+id}/>
+       return <Navigate to = {'/post/'+id}/>
        }
     return(
 
@@ -66,5 +66,5 @@ export default function EditPost(){
          <Editor value={content} onChange={setContent}/>
          <button style={{marginTop:'5px'}}>Update Post</button>
         </form>
-    )
+    );
 }

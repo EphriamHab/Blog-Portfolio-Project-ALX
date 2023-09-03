@@ -28,8 +28,8 @@ export default function CreatePost(){
     }
 
 }
-   if(redirect){
-    <Navigate to = {'/'}/>
+if (redirect) {
+       return <Navigate to={'/'} />
    }
     return(
         <form onSubmit={createNewPost}>
