@@ -1,0 +1,21 @@
+{
+  "name": "blogify",
+  "version": "1.0.0",
+  "description": "Blog our thought",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd api && npm install  && cd ../client && npm install && npm run build",
+    "start": "node api/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/EphriamHab/Blog-Portfolio-Project-ALX.git"
+  },
+  "author": "Ephrem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EphriamHab/Blog-Portfolio-Project-ALX/issues"
+  },
+  "homepage": "https://github.com/EphriamHab/Blog-Portfolio-Project-ALX#readme"
+}
