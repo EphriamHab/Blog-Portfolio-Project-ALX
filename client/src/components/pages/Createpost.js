@@ -32,7 +32,7 @@ if (redirect) {
        return <Navigate to={'/'} />
    }
     return(
-        <form onSubmit={createNewPost}>
+        <form onSubmit={createNewPost} className='createpost'>
          <input type="title" 
                 placeholder={"Title"} 
                 value={title}

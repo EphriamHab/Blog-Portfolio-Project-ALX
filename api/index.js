@@ -1,5 +1,6 @@
 const express = require("express")
 const cors = require("cors");
+const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const User = require('./models/User');
 const Post = require('./models/Post')
@@ -20,7 +21,8 @@ app.use(cors({credentials:true,origin:'http://localhost:3000'}));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname+'/uploads'));
-mongoose.connect("mongodb+srv://ephremhabtamu0524:ephrem1234@cluster1.n3bi7va.mongodb.net/mernBlog?retryWrites=true&w=majority")
+dotenv.config();
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
   })
