@@ -1,4 +1,4 @@
-#Blog-Empowering-Thoughts
+# Blog-Empowering-Thoughts
 
 The MERN Blog App is a simple blogging platform that allows users to create, edit, and delete their own blog posts. This project was created as part of [insert name of your course or purpose] and is built using the MERN stack, which consists of MongoDB, Express.js, React, and Node.js.
 
@@ -6,7 +6,7 @@ Deployed Site: [Link to Deployed Site](https://render.com).
 Final Project Blog Article: [Link to Blog Article](https://medium.com/@ephremhabtamu2015).
 Author(s) LinkedIn: [Author LinkedIn Profile](www.linkedin.com).
 
-#Installation
+# Installation
 To run the MERN Blog App on your local machine, follow these steps:
 
 1 Clone the repository to your local machine:
@@ -35,7 +35,7 @@ npm start
 
 6 Your MERN Blog App should now be running on your local machine. Open your browser and navigate to http://localhost:3000 to access the application.
 
-#Usage
+# Usage
 
 1 Register for an account on the app.
 2 Log in with your credentials.
@@ -43,7 +43,7 @@ npm start
 4 Edit or delete your own posts by clicking edit and delete button if you are author of the post.
 5 Explore other users' post.
 
-#Contributing
+# Contributing
 
 If you'd like to contribute to this project, please follow these steps:
 
