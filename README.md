@@ -3,6 +3,7 @@
 The MERN Blog App is a simple blogging platform that allows users to create, edit, and delete their own blog posts. This project was created as part of [insert name of your course or purpose] and is built using the MERN stack, which consists of MongoDB, Express.js, React, and Node.js.
 
 ![Sample Image](./images/p1.PNG)
+
 ![Sample Image](./images/p2.PNG)
 
 - Deployed Site: [Link to Deployed Site](https://render.com).
