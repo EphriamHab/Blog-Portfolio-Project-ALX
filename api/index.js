@@ -18,16 +18,21 @@ const PostModel = require("./models/Post");
 const salt = bcrypt.genSaltSync(10);
 const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 
+// middle ware to use imported library.
+
 app.use(cors({credentials:true,origin:'http://localhost:3000'}));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname+'/uploads'));
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
 dotenv.config();
+
+// database connection
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
@@ -35,6 +40,8 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error);
   });
+
+  // register user
 
 app.post('/register', async(req,res)=>{
 const {username,password} = req.body;
@@ -48,6 +55,8 @@ res.json(userDoc);
     res.status(400).json(error);
 }
 })
+// user login ased on crediantials
+
 app.post('/login',async(req,res)=>{
   const {username,password} = req.body;
    const userDoc = await User.findOne({username});
@@ -64,6 +73,8 @@ app.post('/login',async(req,res)=>{
       res.status(400).json('wrong credintials')
     }
   });
+  // get profile info that saved during regisster
+
 app.get('/profile', (req, res) => {
   const { token } = req.cookies;
 
@@ -83,10 +94,13 @@ app.get('/profile', (req, res) => {
 
 
 
+// logout the app
 
 app.post('/logout',(req,res)=>{
     res.cookie('token','').json('ok');
 });
+
+// create and post our idea
 
 app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
   const {originalname,path} = req.file;
@@ -110,6 +124,8 @@ app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
   });
 
 });
+
+// edit our post if you are author of the post
 
 app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
   let newPath = null;
@@ -144,6 +160,8 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
     res.json(updatedPost);
   });
 });
+
+// delete our post if you are author of the post
 
 app.delete("/post/:id", async (req, res) => {
   console.log("DELETE request received at /post/:id");
@@ -180,6 +198,8 @@ app.delete("/post/:id", async (req, res) => {
   });
 });
 
+// display post information
+
 app.get('/post', async(req,res)=>{
   res.json(
     await Post.find()
@@ -189,6 +209,8 @@ app.get('/post', async(req,res)=>{
     );
 
 });
+
+// get user info
 
 app.get('/post/:id', async(req,res)=>{
 const {id} = req.params;

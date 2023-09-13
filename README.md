@@ -2,9 +2,9 @@
 
 The MERN Blog App is a simple blogging platform that allows users to create, edit, and delete their own blog posts. This project was created as part of [insert name of your course or purpose] and is built using the MERN stack, which consists of MongoDB, Express.js, React, and Node.js.
 
-  Deployed Site: [Link to Deployed Site](https://render.com).
-  Final Project Blog Article: [Link to Blog Article](https://medium.com/@ephremhabtamu2015).
-  Author(s) LinkedIn: [Author LinkedIn Profile](www.linkedin.com).
+- Deployed Site: [Link to Deployed Site](https://render.com).
+- Final Project Blog Article: [Link to Blog Article](https://medium.com/@ephremhabtamu2015).
+- Author(s) LinkedIn: [Author LinkedIn Profile](www.linkedin.com).
 
 # Installation
 To run the MERN Blog App on your local machine, follow these steps:
@@ -52,3 +52,11 @@ If you'd like to contribute to this project, please follow these steps:
 3. Make your changes and commit them: git commit -m "Add new feature".
 4. Push your changes to your forked repository: git push origin feature/new-feature.
 5. Create a pull request to merge your changes into the main project.
+
+# Related Projects
+Link to Related Project 1
+
+# Licensing
+This project is licensed under the ALX License.
+
+
