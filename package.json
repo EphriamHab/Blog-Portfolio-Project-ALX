@@ -6,7 +6,10 @@
   "scripts": {
     "client-build": "cd client && npm install && npm run build",
     "api-build": "cd api && npm install",
-    "start": "node api/index.js",
+    "client-start": "cd client && npm start", 
+    "api-start": "node api/index.js", 
+    "build": "npm run client-build && npm run api-build",
+    "start": "npm run api-start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
