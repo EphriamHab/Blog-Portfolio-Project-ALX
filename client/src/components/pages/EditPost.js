@@ -50,7 +50,7 @@ export default function EditPost(){
        }
     return(
 
-        <form onSubmit={updatePost}>
+        <form onSubmit={updatePost} className='createpost'>
          <input type="title" 
                 placeholder={"Title"} 
                 value={title}
