@@ -25,8 +25,7 @@ const corsOptions = {
   origin: 'https://blogapp-m884.onrender.com',
 };
 app.use(cors(corsOptions));
-// app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
-// app.use(cors({ credentials: true, origin: 'https://blogapp-m884.onrender.com' }));
+
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(express.json());
