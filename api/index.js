@@ -22,7 +22,7 @@ const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 
 const corsOptions = {
   credentials: true,
-  origin: '*',
+  origin: 'https://blogapp-m884.onrender.com',
 };
 app.use(cors(corsOptions));
 // app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
