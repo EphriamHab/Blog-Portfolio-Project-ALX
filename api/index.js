@@ -20,14 +20,12 @@ const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 
 // middle ware to use imported library.
 
-app.use(cors({credentials:true,origin:'http://localhost:3000'}));
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(express.static(path.join(__dirname, '../client/build')));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(express.json());
 app.use(cookieParser());
-app.use('/uploads',express.static(__dirname+'/uploads'));
-app.use(express.static(path.join(__dirname, '../client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
+
 
 dotenv.config();
 
@@ -97,8 +95,9 @@ app.get('/profile', (req, res) => {
 // logout the app
 
 app.post('/logout',(req,res)=>{
-    res.cookie('token','').json('ok');
-});
+  res.cookie('token', '', { expires: new Date(0) });
+  res.setHeader('Content-Type', 'application/json'); // Set Content-Type explicitly
+  res.json({ message: 'Logged out successfully' });});
 
 // create and post our idea
 
@@ -207,7 +206,6 @@ app.get('/post', async(req,res)=>{
     .sort({createdAt:-1})
     .limit(20)
     );
-
 });
 
 // get user info
@@ -216,6 +214,10 @@ app.get('/post/:id', async(req,res)=>{
 const {id} = req.params;
 const postDoc = await Post.findById(id).populate('author',['username']);
 res.json(postDoc);
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
 

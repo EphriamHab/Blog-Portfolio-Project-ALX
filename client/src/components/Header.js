@@ -6,6 +6,9 @@ export default function Header(){
     useEffect(()=>{
         fetch('http://localhost:4000/profile',{
             credentials:'include',
+            headers: {
+              'Accept': 'application/json', // Request JSON response
+            },
         }).then(response =>{
            response.json().then(userInfo=>{
            setUserInfo(userInfo);
@@ -17,6 +20,9 @@ export default function Header(){
       fetch('http://localhost:4000/logout',{
         credentials:'include',
         method:'POST',
+        headers: {
+          'Accept': 'application/json', // Request JSON response
+        },
       }).then(() => {
         setUserInfo(null);
       });
