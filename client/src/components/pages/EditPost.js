@@ -35,7 +35,7 @@ export default function EditPost(){
         data.set('file',files?.[0]);
      }
      
-   const response = await fetch('http://localhost:4000/post',{
+   const response = await fetch('https://blogapp-m884.onrender.com/post',{
         method:'PUT',
         body: data,
         credentials: 'include',

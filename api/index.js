@@ -102,7 +102,8 @@ app.get('/profile', (req, res) => {
 app.post('/logout',(req,res)=>{
   res.cookie('token', '', { expires: new Date(0) });
   res.setHeader('Content-Type', 'application/json'); // Set Content-Type explicitly
-  res.json({ message: 'Logged out successfully' });});
+  res.json({ message: 'Logged out successfully' });
+});
 
 // create and post our idea
 

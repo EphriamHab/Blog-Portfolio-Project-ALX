@@ -4,7 +4,7 @@ import { UserContext } from "./Usercontext";
 export default function Header(){
    const {userInfo,setUserInfo} = useContext(UserContext);
     useEffect(()=>{
-        fetch('http://localhost:4000/profile',{
+        fetch('https://blogapp-m884.onrender.com/profile',{
             credentials:'include',
             headers: {
               'Accept': 'application/json', // Request JSON response
@@ -17,7 +17,7 @@ export default function Header(){
     },[]);
 
     function logout(){
-      fetch('http://localhost:4000/logout',{
+      fetch('https://blogapp-m884.onrender.com/logout',{
         credentials:'include',
         method:'POST',
         headers: {
