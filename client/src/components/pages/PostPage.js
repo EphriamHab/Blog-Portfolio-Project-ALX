@@ -10,7 +10,7 @@ export default function PostPage(){
     const {id} = useParams();
   
     useEffect(()=>{
-   fetch(`https://blogapp-m884.onrender.com/post/${id}`)
+   fetch(`http://localhost:4000/post/${id}`)
       .then(response =>{
         response.json().then(postInfo =>{
          setPostInfo(postInfo);
@@ -23,7 +23,7 @@ export default function PostPage(){
       console.log('User ID:', userInfo.id);
       console.log('User Info:', userInfo);
       console.log('Token:', userInfo.token);
-      fetch(`https://blogapp-m884.onrender.com/post/${id}`, {
+      fetch(`http://localhost:4000/post/${id}`, {
         method: 'DELETE',
         credentials:'include',
       })
@@ -67,7 +67,7 @@ export default function PostPage(){
         </div>
       )}
             <div className="image">
-            <img src={`https://blogapp-m884.onrender.com/${postInfo.cover}`} alt=""/>
+            <img src={`http://localhost:4000/${postInfo.cover}`} alt=""/>
             </div>
            
             <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
