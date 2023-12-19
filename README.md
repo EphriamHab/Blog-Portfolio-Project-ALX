@@ -61,6 +61,6 @@ If you'd like to contribute to this project, please follow these steps:
 Link to Related Project 1
 
 # Licensing
-This project is licensed under the ALX License.
+This project is licensed under the MIT License.
 
 
