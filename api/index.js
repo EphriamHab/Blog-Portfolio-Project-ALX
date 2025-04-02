@@ -216,7 +216,20 @@ app.get("*", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("welcome to my app");
+  // For API requests (accepts JSON)
+  if (req.headers.accept && req.headers.accept.includes('application/json')) {
+    return res.json({ 
+      message: "Welcome to my blog API",
+      endpoints: {
+        register: "/register",
+        login: "/login",
+        posts: "/post",
+        profile: "/profile"
+      }
+    });
+  }
+  
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 app.listen(4000, (req, res) => {
   console.log("Server is running on port 4000");
