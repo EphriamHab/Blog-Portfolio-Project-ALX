@@ -1,138 +1,134 @@
-const express = require("express")
+const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const path = require('path');
-const User = require('./models/User');
-const Post = require('./models/Post')
-const app = express()
-const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
-const multer = require('multer');
-const uploadMiddleware = multer({ dest: '/tmp/uploads/' });
-const fs = require('fs');
+const path = require("path");
+const User = require("./models/User");
+const Post = require("./models/Post");
+const app = express();
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+const multer = require("multer");
+const uploadMiddleware = multer({ dest: "/tmp/uploads/" });
+const fs = require("fs");
 
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 const PostModel = require("./models/Post");
 
 const salt = bcrypt.genSaltSync(10);
-const secret = 'asdfe45we45w345wegw345werjktjwertkj';
+const secret = "asdfe45we45w345wegw345werjktjwertkj";
 
 // middle ware to use imported library.
 
-app.use(express.static(path.join(__dirname, '../client/build')));
-app.use('/uploads', express.static('/tmp/uploads'));
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.use("/uploads", express.static("/tmp/uploads"));
 app.use(express.json());
 app.use(cookieParser());
-
 
 dotenv.config();
 
 // database connection
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose
+  .connect(process.env.MONGODB_URI)
   .then(() => {
-    console.log('Connected to MongoDB');
+    console.log("Connected to MongoDB");
   })
   .catch((error) => {
-    console.error('Error connecting to MongoDB:', error);
+    console.error("Error connecting to MongoDB:", error);
   });
 
-  // register user
+// register user
 
-app.post('/register', async(req,res)=>{
-const {username,password} = req.body;
-try {
-const userDoc = await User.create({
-    username,
-    password:bcrypt.hashSync(password,salt),
-})
-res.json(userDoc);
-} catch (error) {
+app.post("/register", async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const userDoc = await User.create({
+      username,
+      password: bcrypt.hashSync(password, salt),
+    });
+    res.json(userDoc);
+  } catch (error) {
     res.status(400).json(error);
-}
-})
+  }
+});
 // user login ased on crediantials
 
-app.post('/login',async(req,res)=>{
-  const {username,password} = req.body;
-   const userDoc = await User.findOne({username});
-   const passOk = bcrypt.compareSync(password, userDoc.password);
-    if(passOk){
-      jwt.sign({username,id:userDoc._id},secret,{},(err,token)=>{
-       if(err) throw err;
-       res.cookie('token',token).json({
-          id:userDoc._id,
-          username,
-       });
-      })
-    }else{
-      res.status(400).json('wrong credintials')
-    }
-  });
-  // get profile info that saved during regisster
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  const userDoc = await User.findOne({ username });
+  const passOk = bcrypt.compareSync(password, userDoc.password);
+  if (passOk) {
+    jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
+      if (err) throw err;
+      res.cookie("token", token).json({
+        id: userDoc._id,
+        username,
+      });
+    });
+  } else {
+    res.status(400).json("wrong credintials");
+  }
+});
+// get profile info that saved during regisster
 
-app.get('/profile', (req, res) => {
+app.get("/profile", (req, res) => {
   const { token } = req.cookies;
 
   if (!token) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
   jwt.verify(token, secret, (err, info) => {
     if (err) {
-      return res.status(403).json({ error: 'Invalid token' });
+      return res.status(403).json({ error: "Invalid token" });
     }
 
-  
-    res.json(info); 
+    res.json(info);
   });
 });
 
-
-
 // logout the app
 
-app.post('/logout',(req,res)=>{
-  res.cookie('token', '', { expires: new Date(0) });
-  res.setHeader('Content-Type', 'application/json'); // Set Content-Type explicitly
-  res.json({ message: 'Logged out successfully' });
+app.post("/logout", (req, res) => {
+  res.cookie("token", "", { expires: new Date(0) });
+  res.setHeader("Content-Type", "application/json"); // Set Content-Type explicitly
+  res.json({ message: "Logged out successfully" });
 });
 
 // create and post our idea
 
-app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
-  const {originalname,path} = req.file;
-  const parts = originalname.split('.');
+app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
+  const { originalname, path } = req.file;
+  const parts = originalname.split(".");
   const ext = parts[parts.length - 1];
-  const newPath = path+'.'+ext;
+  const newPath = path + "." + ext;
   fs.renameSync(path, newPath);
 
-  const {token} = req.cookies;
-  jwt.verify(token, secret, {}, async (err,info) => {
+  const { token } = req.cookies;
+  jwt.verify(token, secret, {}, async (err, info) => {
     if (err) throw err;
-    const {title,summary,content} = req.body;
+    const { title, summary, content } = req.body;
     const postDoc = await Post.create({
       title,
       summary,
       content,
-      cover:newPath,
-      author:info.id,
+      cover: newPath,
+      author: info.id,
     });
     res.json(postDoc);
   });
-
 });
 
 // edit our post if you are author of the post
 
-app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
+app.put("/post", uploadMiddleware.single("file"), async (req, res) => {
   let newPath = null;
   if (req.file) {
     const { originalname, path } = req.file;
-    const parts = originalname.split('.');
+    const parts = originalname.split(".");
     const ext = parts[parts.length - 1];
-    newPath = path + '.' + ext;
+    newPath = path + "." + ext;
     fs.renameSync(path, newPath);
   }
 
@@ -153,8 +149,8 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
     const updatedPost = await Post.updateOne(filter, update);
 
     if (updatedPost.nModified === 0) {
-      return res.status(400).json('Failed to update post'); 
-    } 
+      return res.status(400).json("Failed to update post");
+    }
 
     res.json(updatedPost);
   });
@@ -169,11 +165,11 @@ app.delete("/post/:id", async (req, res) => {
   const { token } = req.cookies;
 
   if (!token) {
-    return res.status(401).json({ error: 'Unauthorized - Missing Token' })
+    return res.status(401).json({ error: "Unauthorized - Missing Token" });
   }
   jwt.verify(token, secret, async (err, userInfo) => {
     if (err) {
-      return res.status(403).json({ error: 'Invalid token' });
+      return res.status(403).json({ error: "Invalid token" });
     }
 
     try {
@@ -199,28 +195,30 @@ app.delete("/post/:id", async (req, res) => {
 
 // display post information
 
-app.get('/post', async(req,res)=>{
+app.get("/post", async (req, res) => {
   res.json(
     await Post.find()
-    .populate('author',['username'])
-    .sort({createdAt:-1})
-    .limit(20)
-    );
+      .populate("author", ["username"])
+      .sort({ createdAt: -1 })
+      .limit(20)
+  );
 });
 
 // get user info
 
-app.get('/post/:id', async(req,res)=>{
-const {id} = req.params;
-const postDoc = await Post.findById(id).populate('author',['username']);
-res.json(postDoc);
+app.get("/post/:id", async (req, res) => {
+  const { id } = req.params;
+  const postDoc = await Post.findById(id).populate("author", ["username"]);
+  res.json(postDoc);
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
-
+app.get("/", (req, res) => {
+  res.send("welcome to my app");
+});
 app.listen(4000, (req, res) => {
-  console.log('Server is running on port 4000');
+  console.log("Server is running on port 4000");
 });
