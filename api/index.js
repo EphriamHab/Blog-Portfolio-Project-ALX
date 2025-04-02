@@ -213,36 +213,21 @@ app.get("/post/:id", async (req, res) => {
   res.json(postDoc);
 });
 
-const clientBuildPath = path.join(__dirname, "../client/build");
-
-// Check if frontend build exists before serving it
-if (fs.existsSync(clientBuildPath)) {
-  console.log("✅ Serving frontend from:", clientBuildPath);
-  app.use(express.static(clientBuildPath));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(clientBuildPath, "index.html"));
-  });
-} else {
-  console.warn("⚠️ Frontend build folder not found. Skipping static file serving.");
-}
+// get all post of user
 
 app.get("/", (req, res) => {
-  // For API requests (accepts JSON)
-  if (req.headers.accept && req.headers.accept.includes('application/json')) {
-    return res.json({ 
-      message: "Welcome to my blog API",
-      endpoints: {
-        register: "/register",
-        login: "/login",
-        posts: "/post",
-        profile: "/profile"
-      }
-    });
-  }
-  
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+  return res.json({ 
+    message: "Welcome to my blog API",
+    endpoints: {
+      register: "/register",
+      login: "/login",
+      posts: "/post",
+      profile: "/profile"
+    }
+  });
 });
+  
+
 app.listen(PORT, (req, res) => {
   console.log("Server is running on port 4000");
 });
