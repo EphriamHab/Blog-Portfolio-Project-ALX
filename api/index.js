@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-  origin: 'https://blog-portfolio-project-alx.vercel.app', 
+  origin: 'https://blog-portfolio-project-alx-te3e.vercel.app/', 
   credentials: true
 }));
 
