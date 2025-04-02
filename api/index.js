@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 4000;
 
 // middle ware to use imported library.
 
-app.use(express.static(path.join(__dirname, "../client/build")));
+// app.use(express.static(path.join(__dirname, "../client/build")));
 app.use("/uploads", express.static("/tmp/uploads"));
 app.use(express.json());
 app.use(cookieParser());
@@ -213,9 +213,9 @@ app.get("/post/:id", async (req, res) => {
   res.json(postDoc);
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+// });
 
 app.get("/", (req, res) => {
   // For API requests (accepts JSON)
