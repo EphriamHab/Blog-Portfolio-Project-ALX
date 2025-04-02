@@ -122,38 +122,37 @@ app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
 
 // edit our post if you are author of the post
 
-app.put("/post", uploadMiddleware.single("file"), async (req, res) => {
-  let newPath = null;
-  if (req.file) {
-    const { originalname, path } = req.file;
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
+// In your POST /post route
+app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json("No file uploaded");
   }
 
-  const { token } = req.cookies;
-  jwt.verify(token, secret, {}, async (err, info) => {
-    if (err) throw err;
-    const { id, title, summary, content } = req.body;
-    const filter = { _id: id };
-    const update = {
-      title,
-      summary,
-      content,
-    };
-
-    if (newPath) {
-      update.cover = newPath;
-    }
-    const updatedPost = await Post.updateOne(filter, update);
-
-    if (updatedPost.nModified === 0) {
-      return res.status(400).json("Failed to update post");
-    }
-
-    res.json(updatedPost);
-  });
+  const { originalname, path: tempPath } = req.file; 
+  const parts = originalname.split(".");
+  const ext = parts[parts.length - 1];
+  const newPath = tempPath + "." + ext;
+  
+  try {
+    fs.renameSync(tempPath, newPath);
+    
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
+      if (err) throw err;
+      const { title, summary, content } = req.body;
+      const postDoc = await Post.create({
+        title,
+        summary,
+        content,
+        cover: newPath.replace('/tmp', ''), 
+        author: info.id,
+      });
+      res.json(postDoc);
+    });
+  } catch (error) {
+    console.error("File handling error:", error);
+    res.status(500).json("Error processing file");
+  }
 });
 
 // delete our post if you are author of the post
