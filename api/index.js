@@ -9,7 +9,7 @@ const app = express()
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
-const uploadMiddleware = multer({ dest: 'uploads/' });
+const uploadMiddleware = multer({ dest: '/tmp/uploads/' });
 const fs = require('fs');
 
 const bcrypt = require('bcryptjs');
@@ -21,7 +21,7 @@ const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 // middle ware to use imported library.
 
 app.use(express.static(path.join(__dirname, '../client/build')));
-app.use('/uploads', express.static(__dirname + '/uploads'));
+app.use('/uploads', express.static('/tmp/uploads'));
 app.use(express.json());
 app.use(cookieParser());
 
