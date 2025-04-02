@@ -213,9 +213,19 @@ app.get("/post/:id", async (req, res) => {
   res.json(postDoc);
 });
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-// });
+const clientBuildPath = path.join(__dirname, "../client/build");
+
+// Check if frontend build exists before serving it
+if (fs.existsSync(clientBuildPath)) {
+  console.log("✅ Serving frontend from:", clientBuildPath);
+  app.use(express.static(clientBuildPath));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(clientBuildPath, "index.html"));
+  });
+} else {
+  console.warn("⚠️ Frontend build folder not found. Skipping static file serving.");
+}
 
 app.get("/", (req, res) => {
   // For API requests (accepts JSON)
