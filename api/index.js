@@ -18,6 +18,8 @@ const PostModel = require("./models/Post");
 const salt = bcrypt.genSaltSync(10);
 const secret = "asdfe45we45w345wegw345werjktjwertkj";
 
+const PORT = process.env.PORT || 4000;
+
 // middle ware to use imported library.
 
 app.use(express.static(path.join(__dirname, "../client/build")));
@@ -231,6 +233,6 @@ app.get("/", (req, res) => {
   
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
-app.listen(4000, (req, res) => {
+app.listen(PORT, (req, res) => {
   console.log("Server is running on port 4000");
 });
