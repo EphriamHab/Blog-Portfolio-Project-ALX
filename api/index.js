@@ -27,6 +27,11 @@ app.use("/uploads", express.static("/tmp/uploads"));
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(cors({
+  origin: 'https://blog-portfolio-project-alx.vercel.app', 
+  credentials: true
+}));
+
 dotenv.config();
 
 // database connection
